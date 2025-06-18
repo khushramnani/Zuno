@@ -6,14 +6,23 @@ import { Textarea } from '@/components/ui/textarea'
 import { ArrowRight, Link } from 'lucide-react'
 import Lookup from '@/data/Lookup'
 import { MessageContext } from '@/context/MessageContext'
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { signIn } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 
 
 const page = () => {
     const [userInput, setUserInput] = useState("");
     const messageContext = useContext(MessageContext);
+    const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false)
+    const { data: session } = useSession();
 
     const onGenerate = (input:string) => {
+        if (!session) {
+            setIsLoginDialogOpen(true)
+            return
+        }
         if (!messageContext) return;
         const { messages, setMessages } = messageContext;
         const newMessage = { role: "user", content: input };
@@ -22,7 +31,7 @@ const page = () => {
 
     return (
         <div className=' min-h-screen'>
-            <Header />
+            <Header setIsLoginDialogOpen={setIsLoginDialogOpen} />
             <div className='w-full  text-white flex  justify-center'>
                 <div className='flex items-center mt-36  flex-col  rounded-lg p-8  shadow-lg'>
 
@@ -48,6 +57,29 @@ const page = () => {
                     </div>
                 </div>
             </div>
+            <Dialog open={isLoginDialogOpen} onOpenChange={setIsLoginDialogOpen}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Sign in to Zuno</DialogTitle>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <Button 
+                            onClick={() => signIn("github")} 
+                            variant="outline"
+                            className="w-full"
+                        >
+                            Sign in with GitHub
+                        </Button>
+                        <Button 
+                            onClick={() => signIn("google")} 
+                            variant="outline"
+                            className="w-full"
+                        >
+                            Sign in with Google
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

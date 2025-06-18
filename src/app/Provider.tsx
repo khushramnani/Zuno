@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 import { MessageProvider } from '@/context/MessageContext'
+import { SessionProvider } from "next-auth/react";
 interface ProviderProps {
   children: React.ReactNode;
 }
@@ -18,6 +19,7 @@ const Provider: React.FC<ProviderProps> = ({children}) => {
    
   return (
     <div>
+      <SessionProvider>
         <MessageProvider >
         <ThemeProvider
             attribute="class"
@@ -28,6 +30,7 @@ const Provider: React.FC<ProviderProps> = ({children}) => {
             {children}
         </ThemeProvider>
         </MessageProvider>
+        </SessionProvider>
     </div>
   )
 }
