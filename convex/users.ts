@@ -19,6 +19,7 @@ export const checkOrCreateUser = mutation({
     }
 
     const newUser = await ctx.db.insert("users", {
+      
       name: args.name,
       email: args.email,
       avatar: args.avatar || "",

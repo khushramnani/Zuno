@@ -17,22 +17,42 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  callbacks: {
-    async signIn({ user }) {
-      try {
-        await convex.mutation(api.users.checkOrCreateUser, {
-          name: user.name ?? "Unknown",
-          email: user.email ?? "no@email.com",
-          avatar: user.image ?? "",
-        });
 
-        return true;
-      } catch (e) {
-        console.error("Convex error in signIn callback:", e);
-        return false;
-      }
-    },
+  callbacks: {
+  async signIn({ user }) {
+    const userId = await convex.mutation(api.users.checkOrCreateUser, {
+      name: user.name ?? "Unknown",
+      email: user.email ?? "no@email.com",
+      avatar: user.image ?? "",
+    });
+
+    
+    (user as any).userId = userId;
+    // console.log(user);
+    
+    return true;
   },
+
+  async jwt({ token, user }) {
+    if (user && "userId" in user) {
+    token.userId = (user as any).userId;
+  }
+  // console.log(token);
+  
+    return token;
+  },
+
+  async session({ session, token }) {
+    session.user = {
+      ...session.user,
+      _id: token.userId as string,
+    };
+    // console.log(session);
+    
+    return session;
+  },
+  },
+
   secret: process.env.NEXTAUTH_SECRET,
 });
 

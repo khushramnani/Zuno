@@ -10,24 +10,52 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button'
 import { signIn } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
+import { useMutation } from 'convex/react'
+import { api } from '../../../../convex/_generated/api'
+import { useRouter } from 'next/navigation'
+import { Id } from '../../../../convex/_generated/dataModel'
 
 
-const page = () => {
+const Page = () => {
     const [userInput, setUserInput] = useState("");
     const messageContext = useContext(MessageContext);
     const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false)
-    const { data: session } = useSession();
+    const { data: session , status  } = useSession();
+    const createWorkSpace = useMutation(api.workspace.createWorkSpace)
+    const router = useRouter()
 
-    const onGenerate = (input:string) => {
-        if (!session) {
-            setIsLoginDialogOpen(true)
-            return
-        }
-        if (!messageContext) return;
-        const { messages, setMessages } = messageContext;
-        const newMessage = { role: "user", content: input };
-        setMessages([...messages, newMessage]);
-    }
+// console.log("Session status:", status);
+// console.log("Session data:", session);
+// console.log("Session user ID:", session?.user?._id);
+const onGenerate = async (input: string) => {
+  if (status === "loading") {
+    // Wait for session to load
+    console.log("Session is loading, please wait...");
+    return ;
+  }
+
+  if (!session || !session.user?._id) {
+    setIsLoginDialogOpen(true);
+    return;
+  }
+
+  if (!messageContext) return;
+  const { messages, setMessages } = messageContext;
+  const newMessage = { role: "user", content: input };
+  setMessages([...messages, newMessage]);
+
+  try {
+    const workspaceId = await createWorkSpace({
+      messages: [newMessage],
+      filedata: undefined,
+      user: session.user._id as Id<"users">,
+    });
+
+    router.push(`/workspace/${workspaceId}`);
+  } catch (error) {
+    console.error("Error creating workspace:", error);
+  }
+};
 
     return (
         <div className=' min-h-screen'>
@@ -84,4 +112,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

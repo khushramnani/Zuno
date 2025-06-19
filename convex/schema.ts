@@ -10,5 +10,12 @@ export default defineSchema({
         email:v.string(),
         avatar:v.string(),
         // id:v.string(),
+    }),
+
+    workSpaces:defineTable({
+        messages: v.array(v.object({ role: v.string(), content: v.string() })),
+        filedata: v.optional(v.any()),
+        user: v.id("users"), 
     })
+
 })
