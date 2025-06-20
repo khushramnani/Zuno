@@ -48,3 +48,47 @@ export const updateMessages = mutation({
         return updatedWorkspace;
     }
 })
+
+
+export const updateFileData = mutation({
+    args: {
+        workspaceId: v.id("workSpaces"),
+        filedata: v.any()
+    },
+    handler: async (ctx, args) => {
+        const { workspaceId, filedata } = args;
+
+        const updatedWorkspace = await ctx.db.patch(workspaceId, {
+            filedata
+        });
+
+        return updatedWorkspace;
+    }
+})
+
+export const getWorkSpacesHistory = query({
+    args:{
+        userId: v.id("users")
+    },
+    handler: async (ctx, args) => {
+        const { userId } = args;
+
+        const workspaces = await ctx.db.query("workSpaces")
+            .filter(q=> q.eq(q.field("user"), userId))
+            .collect();
+
+        return workspaces;
+    }
+})
+
+export const deleteWorkSpace = mutation({
+    args: {
+        workspaceId: v.id("workSpaces")
+    },
+    handler: async (ctx, args) => {
+        const { workspaceId } = args;
+
+        await ctx.db.delete(workspaceId);
+        return true; 
+    }
+})

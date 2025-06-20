@@ -1,0 +1,20 @@
+import { GenAICode } from "@/config/AiConfig"
+import { NextResponse } from "next/server"
+
+
+export async function POST(req:Request) {
+    try {
+        const {prompt} = await req.json()
+    
+        const response = await GenAICode.sendMessage(prompt)
+        const result = response.response.text()
+    
+        return NextResponse.json( (JSON.parse(result)))
+    } catch (error: any) {
+        console.error("Error processing request:", error)
+        return NextResponse.json({
+            error: error.message || "Internal Server Error"
+        })
+        
+    }
+}

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { signIn, signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { SidebarTrigger } from '../ui/sidebar'
 
 type HeaderProps = {
     setIsLoginDialogOpen: (open: boolean) => void;
@@ -15,7 +16,10 @@ const Header = ({ setIsLoginDialogOpen }: HeaderProps) => {
 
     return (
         <nav className='flex w-full items-center justify-between p-4 text-white'>
-            <span className='text-lg font-bold'>Zuno</span>
+            <div className='flex items-center gap-2 '>
+            {session ? (<> <SidebarTrigger title='Open Sidebar' className=' cursor-e-resize '/> <hr className='h-6 border border-gray-700'/> </>) : null }
+            <span className={`text-lg font-bold ${session ? 'pl-8' : ''}`}>Zuno</span>
+            </div>
             {session ? (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

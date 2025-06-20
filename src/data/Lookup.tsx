@@ -75,7 +75,8 @@ export default config;
     "react-markdown": "^10.0.0",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
-    "uuid4": "^2.0.3"
+    "uuid4": "^2.0.3",
+    "react-chartjs-2": "^5.0.1",
   },
   PRICING_DESC:'Start with a free account to speed up your workflow on public projects or boost your entire team with instantly-opening production environments.',
   PRICING_OPTIONS:[

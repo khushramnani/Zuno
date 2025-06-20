@@ -91,12 +91,12 @@ const ChatView = () => {
   };
 
   return (
-    <div className='relative h-[85vh] flex flex-col'>
-      <div className='flex-1 overflow-y-auto rounded-lg shadow-md'>
+    <div className='relative h-[85vh] flex flex-col scrollbar-hide'>
+      <div className='flex-1 overflow-y-auto rounded-lg shadow-md scrolbar-hide'>
         {Array.isArray(messages) && messages?.map((msg: any, index: number) => {
         return (
-          <div key={index} className='bg-[#272727] p-3 rounded-lg m-2 flex gap-5 itmes-start '>
-            {msg.role === 'user' && (
+          <div key={index} className={` rounded-lg m-2 flex gap-5 items-start justify-end `}>
+            {/* {msg.role === 'user' && (
               <Image
               src={session?.user.image ? session.user.image : ""}
               alt='User'
@@ -104,9 +104,23 @@ const ChatView = () => {
               height={35}
               className='rounded-full'
               />
+            )} */}
+            {msg.role === 'user' ? (
+              <span
+                className=" bg-violet-900  text-white px-2 py-2 pl-3 rounded-tl-2xl rounded-l-2xl rounded-tr-2xl max-w-[90%] self-start break-words"
+                style={{ alignSelf: 'flex-end', display: 'inline-block' }}
+              >
+                {msg.content}
+              </span>
+            ) : (
+              <span
+                className=" bg-gray-700 text-white rounded-tr-2xl rounded-r-2xl rounded-tl-2xl px-4 py-2   w-full break-words"
+                style={{ alignSelf: 'flex-start', display: 'block' }}
+              >
+                {msg.content}
+              </span>
             )}
-            <h2 className='mt-1' >{msg.content}</h2>
-            
+
           </div>
 
         );
