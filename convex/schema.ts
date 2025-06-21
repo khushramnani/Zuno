@@ -10,6 +10,7 @@ export default defineSchema({
         email:v.string(),
         avatar:v.string(),
         // id:v.string(),
+        token:v.optional(v.number()),
     }),
 
     workSpaces:defineTable({

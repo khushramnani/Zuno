@@ -9,6 +9,8 @@ import { Trash } from 'lucide-react';
 
 const History = () => {
     const {data: session, status} = useSession();
+          const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
     const convex = useConvex();
     const {toggleSidebar} = useSidebar()
     type Workspace = {
@@ -51,19 +53,34 @@ const History = () => {
       {/* <h2 className="text-lg font-semibold">History</h2> */}
       <p className="text-sm text-muted-foreground">Chats</p>
 
-      <div className='mt-4 overflow-y-auto flex flex-col gap-2 max-h-[70vh] '>
-        {workspaces && workspaces.map((workspace, index) => (
-           
-            <span onMouseEnter={() => setOnHover(true)} onMouseLeave={() => setOnHover(false)} onClick={toggleSidebar} className=" p-2  border-b flex justify-between text-base items-center  text-left text-gray-300 rounded-md border-gray-700 hover:bg-gray-800">
-                <Link  className='' key={index} href={`/workspace/${workspace._id} `}>
-              {workspace?.messages[0]?.content}
-              </Link> 
-              {onHover?<Trash  className='cursor-pointer w-4 hover:scale-125' onClick={() => deleteWorkSpace(workspace._id)} />:null}
-            </span>
-            
-        ))}
+      <div className='mt-4 overflow-y-auto scrollbar-hide flex flex-col gap-2 max-h-[70vh] '>
+        {workspaces && workspaces.map((workspace, index) => {
+          return (
+        <span
+          key={workspace._id}
+          onMouseEnter={() => setHoveredIndex(index)}
+          onMouseLeave={() => setHoveredIndex(null)}
+          onClick={toggleSidebar}
+          className="p-2 mb-2 border-b flex justify-between text-base items-center text-left text-gray-300 rounded-md border-gray-700 hover:bg-gray-800"
+        >
+          <Link className='' href={`/workspace/${workspace._id}`}>
+            {workspace?.messages[0]?.content}
+          </Link>
+          {hoveredIndex === index ? (
+            <Trash
+          className='cursor-pointer w-4 hover:scale-125'
+          onClick={e => {
+            e.stopPropagation();
+            deleteWorkSpace(workspace._id);
+          }}
+            />
+          ) : null}
+        </span>
+          );
+        })}
       </div>
-    </div>
+      </div>
+    // </div>
   )
 }
 

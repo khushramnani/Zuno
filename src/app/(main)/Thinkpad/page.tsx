@@ -39,10 +39,8 @@ const onGenerate = async (input: string) => {
     return;
   }
 
-  if (!messageContext) return;
-  const { messages, setMessages } = messageContext;
+  // Don't update messages here, just create workspace and redirect
   const newMessage = { role: "user", content: input };
-  setMessages([...messages, newMessage]);
 
   try {
     const workspaceId = await createWorkSpace({
@@ -79,7 +77,7 @@ const onGenerate = async (input: string) => {
                         </div>
                         <div className='mt-4 max-w-2xl w-full flex flex-wrap items-center justify-center gap-1'>
                             {Lookup.SUGGESTIONS.map((suggestion , index) => (
-                                <span key={index} onClick={() => { onGenerate(suggestion); setUserInput(suggestion); }} className='border text-sm  cursor-pointer hover:bg-gray-800 p-1 px-2 rounded-2xl '>{suggestion}</span>
+                                <span key={index} onClick={() => setUserInput(suggestion)} className='border text-sm  cursor-pointer hover:bg-gray-800 p-1 px-2 rounded-2xl '>{suggestion}</span>
                             ))}
                         </div>
                     </div>

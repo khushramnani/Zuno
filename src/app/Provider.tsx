@@ -29,10 +29,13 @@ const Provider: React.FC<ProviderProps> = ({children}) => {
             enableSystem={true}
             disableTransitionOnChange={false}
         >
-          <SidebarProvider>
+          <SidebarProvider defaultOpen={false}>
+            <div className="flex h-screen w-full">
             <HistorySidebar/>
-            
+            <main className="flex-1 overflow-y-auto">
             {children}
+            </main>
+            </div>
             </SidebarProvider>
         </ThemeProvider>
         </MessageProvider>

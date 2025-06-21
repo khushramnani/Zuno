@@ -17,6 +17,10 @@ interface Message {
   content: string;
 }
 
+export const countToken=(inputtext : string)=>{
+  return inputtext.trim().split(/\s+/).filter((word) => word !== '').length;
+}
+
 const ChatView = () => {
   const context = useContext(MessageContext);
   if (!context) {
@@ -28,6 +32,7 @@ const ChatView = () => {
   const [loading, setLoading] = useState(false);
   const convex = useConvex();
   const UpdateMessages = useMutation(api.workspace.updateMessages);
+  const UpdateToken = useMutation(api.users.updadteUserToken);
   const router = useRouter();
   const { id } = useParams();
 
@@ -41,6 +46,8 @@ const ChatView = () => {
       console.warn('No session or user ID, redirecting to /Thinkpad');
       router.push('/Thinkpad');
     }
+    console.log(session?.user);
+    
   }, [session, status, router]);
 
   useEffect(() => {
@@ -78,10 +85,19 @@ const ChatView = () => {
     const aiResponse={role:'ai',content:result.data.result}
     setMessages((prev: any )=>[...prev,aiResponse]);
     // console.log("ai:",result.data.result)
+
+    
     await UpdateMessages({
       messages: [...messages,aiResponse],
       workspaceId:id as any
     })
+
+    const token = Number(session?.user.token) - Number(countToken(JSON.stringify(aiResponse)))
+    await UpdateToken({
+      userId: session?.user?._id as Id<'users'>,
+      token: token
+    });
+
     setLoading(false)
   }
 
@@ -92,10 +108,10 @@ const ChatView = () => {
 
   return (
     <div className='relative h-[85vh] flex flex-col scrollbar-hide'>
-      <div className='flex-1 overflow-y-auto rounded-lg shadow-md scrolbar-hide'>
+      <div className='flex-1 overflow-y-auto rounded-lg shadow-md scrollbar-hide'>
         {Array.isArray(messages) && messages?.map((msg: any, index: number) => {
         return (
-          <div key={index} className={` rounded-lg m-2 flex gap-5 items-start justify-end `}>
+          <div key={index} className={` rounded-lg m-2 flex gap-5 items-start justify-end scrollbar-hide`}>
             {/* {msg.role === 'user' && (
               <Image
               src={session?.user.image ? session.user.image : ""}

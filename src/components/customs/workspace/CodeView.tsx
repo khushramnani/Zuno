@@ -17,6 +17,8 @@ import { api } from '../../../../convex/_generated/api';
 import { updateFileData } from '../../../../convex/workspace';
 import { Id } from '../../../../convex/_generated/dataModel';
 import { Loader, Loader2, Loader2Icon } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { countToken } from './ChatView';
 
 const CodeView = () => {
   const [activeTab, setActiveTab] = useState('code');
@@ -24,6 +26,9 @@ const CodeView = () => {
   const {messages, setMessages} = useContext<any>(MessageContext)
   const [loading, setLoading] = useState(false);
   const {id} = useParams();
+  const {data: session, status} = useSession();
+  const UpdateToken = useMutation(api.users.updadteUserToken);
+
   const convex = useConvex();
   const UpdateFiles=useMutation(api.workspace.updateFileData)
   const [dynamicDeps, setDynamicDeps] = useState({});
@@ -73,12 +78,18 @@ const CodeView = () => {
       workspaceId: id as Id<'workSpaces'>,
       filedata: mergedFiles 
     })
+
+    const token = Number(session?.user.token) - Number(countToken(JSON.stringify(aiResp)))
+    await UpdateToken({
+      userId: session?.user?._id as Id<'users'>,
+      token: token
+    });
     setLoading(false);
 
   }
   
   return (
-    <div className='w-full h-full flex flex-col relative'>
+    <div className='w-full h-full flex flex-col relative '>
       <div className='flex justify-start items-center rounded-t-sm p-2 bg-[#181818] gap-2 text-white'>
         <div className='bg-black  rounded-full text-sm flex gap-2 '>
         <button className={`py-1 px-4 rounded-l-full rounded-r-md ${activeTab === 'code' ? 'border bg-gray-900 ' : ''}`} onClick={() => setActiveTab('code')}>Code</button>
@@ -104,7 +115,7 @@ const CodeView = () => {
           {activeTab=='code'&& <>
 
       <SandpackFileExplorer style={{height:'80vh'}} initialCollapsedFolder={["components/","/public/"]} />
-      <SandpackCodeEditor showInlineErrors={true} style={{height:'80vh'}}/>
+      <SandpackCodeEditor showTabs={false} className='scrollbar-hide' showInlineErrors={true} style={{height:'80vh'}}/>
       </>}
 
           {activeTab=='preview'&& <>
