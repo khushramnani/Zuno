@@ -10,12 +10,12 @@ import { ArrowRight, Link, Loader } from 'lucide-react';
 import axios from 'axios';
 import { Prompt } from '@/data/prompt';
 import { Id } from '../../../../convex/_generated/dataModel';
-import Image from 'next/image';
 
-interface Message {
-  role: 'user' | 'ai';
-  content: string;
-}
+
+// interface Message {
+//   role: 'user' | 'ai';
+//   content: string;
+// }
 
 export const countToken=(inputtext : string)=>{
   return inputtext.trim().split(/\s+/).filter((word) => word !== '').length;
@@ -121,15 +121,7 @@ const ChatView = () => {
         {Array.isArray(messages) && messages?.map((msg: any, index: number) => {
         return (
             <div key={index} className={`rounded-lg m-2 flex gap-5 items-start justify-end scrollbar-hide`}>
-            {/* {msg.role === 'user' && (
-              <Image
-              src={session?.user.image ? session.user.image : ""}
-              alt='User'
-              width={35}
-              height={35}
-              className='rounded-full'
-              />
-            )} */}
+            
             {loading && index === messages.length - 1 && msg.role === 'user' ? (
               // Show skeleton for AI response after user message
               <div className="flex flex-col gap-2 w-full">

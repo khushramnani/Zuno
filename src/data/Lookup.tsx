@@ -1,4 +1,4 @@
-import dedent from "dedent";
+
 
 export default {
   SUGGESTIONS: ['Create ToDo App in React', 'Create Budget Track App', 'Create Gym Management Portal Dashboard', 'Create Quiz App On History', 'Create Login Signup Screen'],

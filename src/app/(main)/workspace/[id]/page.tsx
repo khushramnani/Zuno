@@ -4,11 +4,10 @@ import Header from "@/components/customs/header"
 import ChatView from "@/components/customs/workspace/ChatView";
 import CodeView from "@/components/customs/workspace/CodeView";
 import { useState } from "react";
-import { SidebarProvider } from '@/components/ui/sidebar'
-import HistorySidebar from '@/components/customs/HistorySidebar'
+
 
 const Page = () => {
-    const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+    const [, setIsLoginDialogOpen] = useState(false);
   console.log(process.env.NEXT_PUBLIC_MAX_TOKENS);
   
   return (

@@ -1,4 +1,4 @@
-import { useConvex, useMutation } from 'convex/react';
+
 import React, { useEffect, useState } from 'react'
 
 import { useSession } from 'next-auth/react';
@@ -22,7 +22,7 @@ const TokenBar = () => {
        return () => clearTimeout(timer)
 
 
-    }, [session]);
+    }, [session , defaultToken]);
 
     // Dynamically set maxToken
     const maxToken = Math.max(defaultToken, currtoken);

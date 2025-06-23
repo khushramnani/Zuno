@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSession } from "next-auth/react";
 import Header from "@/components/customs/header";
-import { ArrowBigLeft } from "lucide-react";
-import Link from "next/link";
+
 
 const plans = [
 	{
@@ -37,9 +36,9 @@ const plans = [
 ];
 
 const PricingPage = () => {
-	const { data: session } = useSession();
+	// const { data: session } = useSession();
 	const [loading, setLoading] = useState(false);
-    const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+    const [, setIsLoginDialogOpen] = useState(false);
 	// Placeholder for payment integration
 	const handleBuy = (plan: typeof plans[number]) => {
 		setLoading(true);
@@ -65,7 +64,7 @@ const PricingPage = () => {
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 				{plans.map((plan, idx) => (
 					<div
-						key={plan.name}
+						key={idx}
 						className={`rounded-2xl border shadow-lg p-8 flex flex-col items-center bg-card transition-transform hover:scale-105 ${
 							plan.highlight ? "border-primary/70 ring-2 ring-primary/30" : "border-border"
 						}`}

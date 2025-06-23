@@ -5,7 +5,7 @@ import Header from '@/components/customs/header'
 import { Textarea } from '@/components/ui/textarea'
 import { ArrowRight, Link, Loader } from 'lucide-react'
 import Lookup from '@/data/Lookup'
-import { MessageContext } from '@/context/MessageContext'
+// import { MessageContext } from '@/context/MessageContext'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { signIn } from 'next-auth/react'
@@ -18,7 +18,7 @@ import { Id } from '../../../../convex/_generated/dataModel'
 
 const Page = () => {
     const [userInput, setUserInput] = useState("");
-    const messageContext = useContext(MessageContext);
+    // const messageContext = useContext(MessageContext);
     const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
     const { data: session , status  } = useSession();
@@ -82,7 +82,9 @@ const onGenerate = async (input: string) => {
                                 onChange={(e) => setUserInput(e.target.value)}
                                 value={userInput}
                             />
-                            {userInput && isLoading?(<Loader className='absolute right-2 top-2 text-white w-8 h-8 animate-spin bg-indigo-500 p-2 rounded-md' />) : <ArrowRight onClick={() => onGenerate(userInput)} className='absolute right-2 top-2 text-white w-8 bg-indigo-500 p-2 h-8 rounded-md ' /> }
+                            {userInput && isLoading?(<div className="absolute right-2 top-2 bg-indigo-500 p-2 rounded-md">
+                              <Loader className="text-white w-4 h-4 animate-spin" />
+                            </div>) : <ArrowRight onClick={() => onGenerate(userInput)} className='absolute right-2 top-2 text-white w-8 bg-indigo-500 p-2 h-8 rounded-md ' /> }
                             <div className='absolute left-2 bottom-2 mt-2'>
                             <Link className='  text-white w-8  p-2 h-8 rounded-md ' />
                             </div>

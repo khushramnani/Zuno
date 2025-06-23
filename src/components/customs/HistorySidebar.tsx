@@ -1,11 +1,11 @@
 'use client'
 import React from 'react'
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarTrigger, useSidebar } from '../ui/sidebar'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, useSidebar } from '../ui/sidebar'
 import { Button } from '../ui/button'
 import { ChevronLeft, MessageCircleCode } from 'lucide-react'
 import History from './workspace/History'
 import Link from 'next/link'
-import { useConvex, useMutation } from 'convex/react'
+import { useConvex } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import { useSession } from 'next-auth/react'
 import { Id } from '../../../convex/_generated/dataModel'
@@ -13,9 +13,9 @@ import { useRouter } from 'next/navigation'
 import TokenBar from './TokenBar'
 const HistorySidebar = () => {
     const convex = useConvex();
-    const {data: session, status} = useSession();
+    const {data: session} = useSession();
     const router = useRouter();
-    const {toggleSidebar} = useSidebar();
+    // const {toggleSidebar} = useSidebar();
     const createNewChat = async () => {
         const response = await convex.mutation(api.workspace.createWorkSpace,{
             messages: [],

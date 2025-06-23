@@ -2,11 +2,11 @@
 
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { SidebarTrigger } from '../ui/sidebar'
-import { usePathname } from 'next/navigation'
+
 
 type HeaderProps = {
     setIsLoginDialogOpen: (open: boolean) => void;

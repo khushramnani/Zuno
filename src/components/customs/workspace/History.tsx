@@ -8,7 +8,7 @@ import { useSidebar } from '@/components/ui/sidebar';
 import { Trash } from 'lucide-react';
 
 const History = () => {
-    const {data: session, status} = useSession();
+    const {data: session} = useSession();
           const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
     const convex = useConvex();
@@ -22,7 +22,7 @@ const History = () => {
     };
     
     const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
-    const [onHover , setOnHover] = useState<boolean>(false);
+    
     useEffect(()=>{
         getAllWorkSpaces();
     },[session])

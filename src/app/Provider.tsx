@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
+
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 import { MessageProvider } from '@/context/MessageContext'
 import { SessionProvider } from "next-auth/react";
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import HistorySidebar from '@/components/customs/HistorySidebar';
 interface ProviderProps {
   children: React.ReactNode;

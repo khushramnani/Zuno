@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Sandpack } from "@codesandbox/sandpack-react";
+
 import { SandpackProvider,
   SandpackLayout,
   SandpackCodeEditor,
   SandpackPreview,
   SandpackFileExplorer,
-  SandpackConsole
+  
   } from '@codesandbox/sandpack-react';
 import Lookup from '@/data/Lookup';
 import { MessageContext } from '@/context/MessageContext';
@@ -14,9 +14,8 @@ import axios from 'axios';
 import { useParams } from 'next/navigation';
 import { useConvex, useMutation } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
-import { updateFileData } from '../../../../convex/workspace';
 import { Id } from '../../../../convex/_generated/dataModel';
-import { CloudDownload, ExternalLink, Loader, Loader2, Loader2Icon, TrendingUp } from 'lucide-react';
+import { CloudDownload, ExternalLink, Loader, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { countToken } from './ChatView';
 import JSZip from 'jszip';
@@ -28,7 +27,7 @@ const CodeView = () => {
   const {messages, setMessages} = useContext<any>(MessageContext)
   const [loading, setLoading] = useState(false);
   const {id} = useParams();
-  const {data: session, status} = useSession();
+  const {data: session} = useSession();
   const UpdateToken = useMutation(api.users.updadteUserToken);
 
   const convex = useConvex();
