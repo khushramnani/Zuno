@@ -63,6 +63,9 @@ files:{
 
 - Use icons from lucide-react for logos only when needed.
 - use shadows and cards
+- Check if a file named /public/index.html exists in the default files. If it does, ensure that the Tailwind CDN is present in the <head> using this line:
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+- If /public/index.html doesn't exist, create it with the Tailwind CDN included.
 - proper spacing between elements and padding
 - don't create src folder
 - after creating the project, update package.json file 

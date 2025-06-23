@@ -8,8 +8,13 @@ export async function POST(req:Request) {
     
         const response = await GenAICode.sendMessage(prompt)
         const result = response.response.text()
+        if (!result || result.trim() === "") {
+      throw new Error("Empty response from AI");
+    }
+
+    const parsed = JSON.parse(result);
     
-        return NextResponse.json( (JSON.parse(result)))
+        return NextResponse.json(parsed)
     } catch (error: any) {
         console.error("Error processing request:", error)
         return NextResponse.json({

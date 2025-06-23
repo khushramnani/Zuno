@@ -17,7 +17,8 @@ export default {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
   <body>
     <div id="root"></div>
@@ -35,7 +36,9 @@ export default {
             /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}", 
+    "./public/index.html", 
+    "./components/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
     extend: {},
@@ -48,6 +51,7 @@ module.exports = {
 const config = {
   plugins: {
     tailwindcss: {},
+    autoprefixer: {}
   },
 };
 
@@ -56,6 +60,9 @@ export default config;
     }
   },
   DEPENDENCY: {
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.31",
+    "autoprefixer": "^10.4.12",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@google/generative-ai": "^0.22.0",
     "@radix-ui/react-dialog": "^1.1.6",
@@ -78,35 +85,35 @@ export default config;
     "uuid4": "^2.0.3",
     "react-chartjs-2": "^5.0.1",
   },
-  PRICING_DESC:'Start with a free account to speed up your workflow on public projects or boost your entire team with instantly-opening production environments.',
-  PRICING_OPTIONS:[
+  PRICING_DESC: 'Start with a free account to speed up your workflow on public projects or boost your entire team with instantly-opening production environments.',
+  PRICING_OPTIONS: [
     {
-      name:'Basic',
-      tokens:'50K',
-      value:50000,
-      desc:'Ideal for hobbyists and casual users for light, exploratory use.',
-      price:4.99
+      name: 'Basic',
+      tokens: '50K',
+      value: 50000,
+      desc: 'Ideal for hobbyists and casual users for light, exploratory use.',
+      price: 4.99
     },
     {
-      name:'Starter',
-      tokens:'120K',
-      value:120000,
-      desc:'Designed for professionals who need to use Bolt a few times per week.',
-      price:9.99
+      name: 'Starter',
+      tokens: '120K',
+      value: 120000,
+      desc: 'Designed for professionals who need to use Bolt a few times per week.',
+      price: 9.99
     },
     {
-      name:'Pro',
-      tokens:'2.5M',
-      value:2500000,
-      desc:'Designed for professionals who need to use Bolt a few times per week.',
-      price:19.99
+      name: 'Pro',
+      tokens: '2.5M',
+      value: 2500000,
+      desc: 'Designed for professionals who need to use Bolt a few times per week.',
+      price: 19.99
     },
     {
-      name:'Unlimted (License)',
-      tokens:'Unmited',
-      value:999999999,
-      desc:'Designed for professionals who need to use Bolt a few times per week.',
-      price:49.99
+      name: 'Unlimted (License)',
+      tokens: 'Unmited',
+      value: 999999999,
+      desc: 'Designed for professionals who need to use Bolt a few times per week.',
+      price: 49.99
     }
   ]
 

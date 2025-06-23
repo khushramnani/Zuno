@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@codesandbox/sandpack-client": "^2.19.8",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@google/genai": "^1.5.1",
     "@google/generative-ai": "^0.24.1",
@@ -24,6 +25,8 @@
     "clsx": "^2.1.1",
     "convex": "^1.24.8",
     "dedent": "^1.6.0",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
     "lucide-react": "^0.516.0",
     "mime": "^4.0.7",
     "next": "15.3.3",
@@ -37,6 +40,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/file-saver": "^2.0.7",
     "@types/node": "^20.19.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",

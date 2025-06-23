@@ -3,7 +3,7 @@
 import React, { useContext, useState } from 'react'
 import Header from '@/components/customs/header'
 import { Textarea } from '@/components/ui/textarea'
-import { ArrowRight, Link } from 'lucide-react'
+import { ArrowRight, Link, Loader } from 'lucide-react'
 import Lookup from '@/data/Lookup'
 import { MessageContext } from '@/context/MessageContext'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -20,6 +20,7 @@ const Page = () => {
     const [userInput, setUserInput] = useState("");
     const messageContext = useContext(MessageContext);
     const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
     const { data: session , status  } = useSession();
     const createWorkSpace = useMutation(api.workspace.createWorkSpace)
     const router = useRouter()
@@ -28,6 +29,15 @@ const Page = () => {
 // console.log("Session data:", session);
 // console.log("Session user ID:", session?.user?._id);
 const onGenerate = async (input: string) => {
+    setIsLoading(true);
+    if (!input.trim()) {
+        console.log("Input is empty, please enter a prompt.");
+        setIsLoading(false);
+        return;
+    }
+
+
+
   if (status === "loading") {
     // Wait for session to load
     console.log("Session is loading, please wait...");
@@ -37,6 +47,8 @@ const onGenerate = async (input: string) => {
   if (!session || !session.user?._id) {
     setIsLoginDialogOpen(true);
     return;
+    
+    setIsLoading(false);
   }
 
   // Don't update messages here, just create workspace and redirect
@@ -70,7 +82,7 @@ const onGenerate = async (input: string) => {
                                 onChange={(e) => setUserInput(e.target.value)}
                                 value={userInput}
                             />
-                            {userInput && <ArrowRight onClick={() => onGenerate(userInput)} className='absolute right-2 top-2 text-white w-8 bg-indigo-500 p-2 h-8 rounded-md ' />}
+                            {userInput && isLoading?(<Loader className='absolute right-2 top-2 text-white w-8 h-8 animate-spin bg-indigo-500 p-2 rounded-md' />) : <ArrowRight onClick={() => onGenerate(userInput)} className='absolute right-2 top-2 text-white w-8 bg-indigo-500 p-2 h-8 rounded-md ' /> }
                             <div className='absolute left-2 bottom-2 mt-2'>
                             <Link className='  text-white w-8  p-2 h-8 rounded-md ' />
                             </div>
