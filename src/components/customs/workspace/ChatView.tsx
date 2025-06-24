@@ -77,32 +77,83 @@ const ChatView = () => {
         }
     }
   },[messages])
-  const GetAiResponse= async ()=>{
-    setIsLoading(true);
-    setLoading(true)
-    const PROMPT= JSON.stringify(messages)+ Prompt.aiChat
-    const result = await axios.post('/api/ai-chat',{
-       prompt:PROMPT
-    })
-    const aiResponse={role:'ai',content:result.data.result}
-    setMessages((prev: any )=>[...prev,aiResponse]);
-    // console.log("ai:",result.data.result)
+
+//   const GetAiResponse= async ()=>{
+//     setIsLoading(true);
+//     setLoading(true)
+//     const PROMPT= JSON.stringify(messages)+ Prompt.aiChat
+//     const result = await axios.post('/api/ai-chat',{
+//        prompt:PROMPT
+//     })
+//     const aiResponse={role:'ai',content:result.data.result}
+//     setMessages((prev: any )=>[...prev,aiResponse]);
+//     // console.log("ai:",result.data.result)
 
     
-    await UpdateMessages({
-      messages: [...messages,aiResponse],
-      workspaceId:id as any
-    })
+//     await UpdateMessages({
+//       messages: [...messages,aiResponse],
+//       workspaceId:id as any
+//     })
 
-    const token = Number(session?.user.token) - Number(countToken(JSON.stringify(aiResponse)))
+//     const token = Number(session?.user.token) - Number(countToken(JSON.stringify(aiResponse)))
+
+//     const updatedMessages = [...messages, aiResponse];
+// setMessages(updatedMessages);
+
+// await UpdateMessages({
+//   messages: updatedMessages,
+//   workspaceId: id as any,
+// });
+
+
+//     // await UpdateToken({
+//     //   userId: session?.user?._id as Id<'users'>,
+//     //   token: token
+//     // });
+    
+//     setLoading(false)
+//     setIsLoading(false);
+//   }
+
+const GetAiResponse = async () => {
+  setIsLoading(true);
+  setLoading(true);
+
+  const PROMPT = JSON.stringify(messages) + Prompt.aiChat;
+
+  try {
+    const result = await axios.post('/api/ai-chat', {
+      prompt: PROMPT,
+    });
+
+    const aiResponse = {
+      role: 'ai',
+      content: result?.data?.result || 'No response',
+    };
+
+    const updatedMessages = [...messages, aiResponse];
+    setMessages(updatedMessages);
+
+    await UpdateMessages({
+      messages: updatedMessages,
+      workspaceId: id as any,
+    });
+
+    const token =
+      Number(session?.user.token || 0) -
+      countToken(aiResponse.content);
+
     await UpdateToken({
       userId: session?.user?._id as Id<'users'>,
-      token: token
+      token: token,
     });
-    
-    setLoading(false)
+  } catch (error) {
+    console.error("Error fetching AI response or updating Convex:", error);
+  } finally {
+    setLoading(false);
     setIsLoading(false);
   }
+};
 
   const onGenerate = (input: any) => {
     if (!input.trim()) {

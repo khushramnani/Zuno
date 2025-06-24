@@ -58,36 +58,40 @@ const CodeView = () => {
     GetFiles();
   }, [id]);
 
-  const GenerateAiCode = async()=>{
-    setActiveTab('code');
-    setLoading(true);
-    const prompt = JSON.stringify(messages)+" "+Prompt.CODE_GEN_PROMPT
-    const result = await axios.post('/api/gen-ai-code', {
-      prompt: prompt
-    })
-    console.log("Generated code result:", result.data);
-    const aiResp = result.data;
+const GenerateAiCode = async () => {
+  setActiveTab('code');
+  setLoading(true);
 
-    const mergedFiles = {...files, ...aiResp?.files};
-    setFiles(mergedFiles);
+  try {
+    const prompt = JSON.stringify(messages) + " " + Prompt.CODE_GEN_PROMPT;
+    const result = await axios.post('/api/gen-ai-code', { prompt });
 
-    // Set dynamic dependencies if present
-    const aiDeps = aiResp?.dependencies || {};
-    setDynamicDeps(aiDeps);
+    const aiResp = result?.data || {};
+    const newFiles = { ...files, ...(aiResp?.files || {}) };
+    setFiles(newFiles);
+    setDynamicDeps(aiResp?.dependencies || {});
 
     await UpdateFiles({
       workspaceId: id as Id<'workSpaces'>,
-      filedata: mergedFiles 
-    })
+      filedata: newFiles,
+    });
 
-    const token = Number(session?.user.token) - Number(countToken(JSON.stringify(aiResp)))
+    // const token = Number(session?.user.token) - Number(countToken(JSON.stringify(aiResp)));
+    const aiTokenUsage = countToken(JSON.stringify(aiResp?.files || {}));
+    const updatedToken = Math.max(0, Number(session?.user?.token || 0) - aiTokenUsage);
+
     await UpdateToken({
       userId: session?.user?._id as Id<'users'>,
-      token: token
+      token: updatedToken,
     });
-    setLoading(false);
 
+  } catch (error) {
+    console.error("Code generation or Convex error:", error);
+  } finally {
+    setLoading(false);
   }
+};
+
 
   const handleExport = async () => {
     const zip = new JSZip();
