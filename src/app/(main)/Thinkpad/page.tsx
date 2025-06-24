@@ -71,17 +71,16 @@ const Page = () => {
     };
 
     return (
-        <div className=' min-h-screen'>
+        <div className='min-h-screen'>
             <Header setIsLoginDialogOpen={setIsLoginDialogOpen} />
-            <div className='w-full  text-white flex  justify-center'>
-                <div className='flex items-center mt-36  flex-col  rounded-lg p-8  shadow-lg'>
+            <div className='w-full text-white flex justify-center px-2 sm:px-0'>
+                <div className='flex items-center mt-20 sm:mt-36 flex-col rounded-lg p-4 sm:p-8 shadow-lg w-full max-w-2xl'>
 
-                    <h1 className='text-3xl font-bold'>Welcome To <span className='zuno-bold'>Zuno</span></h1>
-                    <p className='mt-1 text-lg font-mono'>Enter your prompt to make your ideas into reality</p>
-                    <div className='max-w-2xl w-full mt-8'>
+                    <h1 className='text-2xl sm:text-3xl font-bold text-center'>Welcome To <span className='zuno-bold'>Zuno</span></h1>
+                    <p className='mt-1 text-base sm:text-lg font-mono text-center'>Enter your prompt to make your ideas into reality</p>
+                    <div className='w-full mt-6 sm:mt-8'>
                         <div className='flex gap-2 relative'>
-                            <Textarea id='thinkpad-textarea' name='thinkpad-textarea' className="w-[48rem] font-mono h-32 max-h-52 resize-none border-none outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none bg-transparent text-white placeholder:text-gray-400 pr-12"
-
+                            <Textarea id='thinkpad-textarea' name='thinkpad-textarea' className="w-full sm:w-[48rem] font-mono h-32 max-h-52 resize-none border-none outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none bg-transparent text-white placeholder:text-gray-400 pr-12 text-base sm:text-lg"
                                 placeholder="Type your thoughts here..."
                                 onChange={(e) => setUserInput(e.target.value)}
                                 value={userInput}
@@ -97,16 +96,20 @@ const Page = () => {
                                     }
                                 }}
                             />
-                            {userInput && isLoading ? (<div className="absolute right-2 top-2 bg-indigo-500 p-2 rounded-md">
-                                <Loader className="text-white w-4 h-4 animate-spin" />
-                            </div>) : <ArrowRight onClick={() => { onGenerate(userInput); toggleSidebar(); }} className='absolute right-2 top-2 text-white w-8 bg-indigo-500 p-2 h-8 rounded-md ' />}
+                            {userInput && isLoading ? (
+                                <div className="absolute right-2 top-2 bg-indigo-500 p-2 rounded-md">
+                                    <Loader className="text-white w-4 h-4 animate-spin" />
+                                </div>
+                            ) : (
+                                <ArrowRight onClick={() => { onGenerate(userInput); toggleSidebar(); }} className='absolute right-2 top-2 text-white w-8 bg-indigo-500 p-2 h-8 rounded-md cursor-pointer' />
+                            )}
                             <div className='absolute left-2 bottom-2 mt-2'>
-                                <Link className='  text-white w-8  p-2 h-8 rounded-md ' />
+                                <Link className='text-white w-8 p-2 h-8 rounded-md' />
                             </div>
                         </div>
-                        <div className='mt-4 max-w-2xl w-full flex flex-wrap items-center justify-center gap-1'>
+                        <div className='mt-4 w-full flex flex-wrap items-center justify-center gap-1'>
                             {Lookup.SUGGESTIONS.map((suggestion, index) => (
-                                <span key={index} onClick={() => setUserInput(suggestion)} className='border text-sm  cursor-pointer hover:bg-gray-800 p-1 px-2 rounded-2xl '>{suggestion}</span>
+                                <span key={index} onClick={() => setUserInput(suggestion)} className='border text-xs sm:text-sm cursor-pointer hover:bg-gray-800 p-1 px-2 rounded-2xl'>{suggestion}</span>
                             ))}
                         </div>
                     </div>

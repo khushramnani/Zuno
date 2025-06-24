@@ -24,8 +24,8 @@ const Header = ({ setIsLoginDialogOpen }: HeaderProps) => {
             <div className='flex items-center gap-2 '>
             {session && !isMobile ? (<> <SidebarTrigger title='Open Sidebar' className=' cursor-e-resize '/> <hr className='h-6 border border-gray-700'/> </>) : null }
             <div className={`flex items-center gap-2 ${session ? 'pl-8' : ''}`}>
-            <Image src="/logo.png" alt="Zuno Logo" width={40} height={40} />
-            <span className={`md:text-xl text-lg  zuno-regular`}>Zuno</span>
+            <Image  src="/logo.png" alt="Zuno Logo" width={40} height={40} />
+            <span onClick={() => router.push('/')} className={`md:text-xl text-lg cursor-pointer  zuno-regular`}>Zuno</span>
             </div>
             </div>
             {session ? (
