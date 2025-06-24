@@ -7,6 +7,7 @@ export const Prompt = {
     - Tell user what you are building
     - response less than 15 lines 
     - skip code examples and commentary
+    - dont write code
     `,
 
     CODE_GEN_PROMPT:dedent`

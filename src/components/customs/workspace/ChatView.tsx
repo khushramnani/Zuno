@@ -10,7 +10,8 @@ import { ArrowRight, Link, Loader } from 'lucide-react';
 import axios from 'axios';
 import { Prompt } from '@/data/prompt';
 import { Id } from '../../../../convex/_generated/dataModel';
-
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // interface Message {
 //   role: 'user' | 'ai';
@@ -197,12 +198,29 @@ const GetAiResponse = async () => {
               {msg.content}
               </span>
             ) : (
-              <span
-              className="bg-gray-700 text-white rounded-tr-2xl rounded-r-2xl rounded-tl-2xl px-4 py-2 w-full break-words"
-              style={{ alignSelf: 'flex-start', display: 'block' }}
-              >
-              {msg.content}
-              </span>
+              <div
+  className="prose max-w-none bg-gray-800 text-white rounded-tr-2xl rounded-r-2xl rounded-tl-2xl px-4 py-2 w-full break-words prose-invert overflow-auto"
+  style={{ alignSelf: 'flex-start', display: 'block', maxWidth: '100%' }}
+>
+  <ReactMarkdown
+    remarkPlugins={[remarkGfm]}
+    components={{
+      code({node, className, children, ...props}) {
+        return (
+          <code
+            className={`${className}  font-mono px-1 py-0.5 text-sm overflow-auto`}
+            style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+            {...props}
+          >
+            {children}
+          </code>
+        );
+      }
+    }}
+  >
+    {msg.content}
+  </ReactMarkdown>
+</div>
             )}
             </div>
 
@@ -214,8 +232,8 @@ const GetAiResponse = async () => {
       <Textarea
       id='thinkpad-textarea'
       name='thinkpad-textarea'
-      className='w-[48rem] mt-2 bg-gray-800 h-24 max-h-52 border-none resize-none text-white placeholder:text-gray-400 pr-12 outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none'
-      placeholder='Type your thoughts here...'
+      className='w-[48rem] mt-2 font-mono bg-gray-800 h-24 max-h-52 border-none resize-none text-white placeholder:text-gray-400 pr-12 outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none'
+      placeholder='Type what you want to change or create...'
       value={userInput}
       onChange={(e) => setUserInput(e.target.value)}
       onKeyDown={(e) => {
@@ -242,7 +260,7 @@ const GetAiResponse = async () => {
           setUserInput('');
         }
         }}
-        className='absolute right-2 top-2 text-white w-8 bg-indigo-500 p-2 h-8 rounded-md cursor-pointer'
+        className='absolute right-2 top-3 text-white w-8 bg-indigo-500 p-2 h-8 rounded-md cursor-pointer'
       />
       )}
       <div className='absolute left-2 bottom-2 mt-2'>

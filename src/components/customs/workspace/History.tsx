@@ -6,10 +6,12 @@ import { Id } from '../../../../convex/_generated/dataModel';
 import Link from 'next/link';
 import { useSidebar } from '@/components/ui/sidebar';
 import { Trash } from 'lucide-react';
+import { Skeleton } from "@/components/ui/skeleton";
 
 const History = () => {
     const {data: session} = useSession();
           const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [loading, setLoading] = useState(true);
 
     const convex = useConvex();
     const {toggleSidebar} = useSidebar()
@@ -24,7 +26,8 @@ const History = () => {
     const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
     
     useEffect(()=>{
-        getAllWorkSpaces();
+        setLoading(true);
+        getAllWorkSpaces().finally(() => setLoading(false));
     },[session])
     
     const getAllWorkSpaces = async () => {
@@ -54,30 +57,36 @@ const History = () => {
       <p className="text-sm text-muted-foreground">Chats</p>
 
       <div className='mt-4 overflow-y-auto scrollbar-hide flex flex-col gap-2 max-h-[70vh] '>
-      {workspaces && [...workspaces].sort((a, b) => b._creationTime - a._creationTime).map((workspace, index) => {
-        return (
-      <span
-        key={workspace._id}
-        onMouseEnter={() => setHoveredIndex(index)}
-        onMouseLeave={() => setHoveredIndex(null)}
-        onClick={toggleSidebar}
-        className="p-2 mb-2 border-b flex justify-between text-base items-center text-left text-gray-300 rounded-md border-gray-700 hover:bg-gray-800"
-      >
-        <Link className='' href={`/workspace/${workspace._id}`}>
-        {workspace?.messages[0]?.content}
-        </Link>
-        {hoveredIndex === index ? (
-        <Trash
-        className='cursor-pointer w-4 hover:scale-125'
-        onClick={e => {
-        e.stopPropagation();
-        deleteWorkSpace(workspace._id);
-        }}
-        />
-        ) : null}
-      </span>
-        );
-      })}
+      {loading ? (
+        Array.from({ length: 5 }).map((_, i) => (
+          <Skeleton key={i} className="h-10 w-full mb-2" />
+        ))
+      ) : (
+        workspaces && [...workspaces].sort((a, b) => b._creationTime - a._creationTime).map((workspace, index) => {
+          return (
+            <span
+              key={workspace._id}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onClick={toggleSidebar}
+              className="p-2 mb-2 border-b flex justify-between text-base items-center text-left text-gray-300 rounded-md border-gray-700 hover:bg-gray-800"
+            >
+              <Link className='' href={`/workspace/${workspace._id}`}>
+                {workspace?.messages[0]?.content}
+              </Link>
+              {hoveredIndex === index ? (
+                <Trash
+                  className='cursor-pointer w-4 hover:scale-125'
+                  onClick={e => {
+                    e.stopPropagation();
+                    deleteWorkSpace(workspace._id);
+                  }}
+                />
+              ) : null}
+            </span>
+          );
+        })
+      )}
       </div>
       </div>
     // </div>

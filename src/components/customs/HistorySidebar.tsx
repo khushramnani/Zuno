@@ -11,11 +11,14 @@ import { useSession } from 'next-auth/react'
 import { Id } from '../../../convex/_generated/dataModel'
 import { useRouter } from 'next/navigation'
 import TokenBar from './TokenBar'
+import Image from 'next/image'
+// import { useSidebar } from '../ui/sidebar'
+
 const HistorySidebar = () => {
     const convex = useConvex();
     const {data: session} = useSession();
     const router = useRouter();
-    // const {toggleSidebar} = useSidebar();
+    const {toggleSidebar} = useSidebar();
     const createNewChat = async () => {
         const response = await convex.mutation(api.workspace.createWorkSpace,{
             messages: [],
@@ -34,7 +37,7 @@ const HistorySidebar = () => {
     <Sidebar collapsible='offcanvas'>
       <SidebarHeader>
         <div className='flex items-center justify-between p-2 text-lg font-bold text-white'> 
-    <span>⚡</span>
+    <Image src="/logo.png" alt="Zuno Logo" width={40} height={40} />
         {/* <SidebarTrigger title='Close Sidebar' className=' cursor-e-resize '/> */}
         <Link href='/Thinkpad' className='text-white hover:text-violet-500'>
         <Button variant='ghost' className='flex items-center gap-2'>
@@ -47,8 +50,8 @@ const HistorySidebar = () => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup >
-            <Button onClick={createNewChat} className="bg-gray-700 text-white hover:bg-violet-900">
-               <MessageCircleCode/> Create New Chat
+            <Button onClick={() => { createNewChat(); toggleSidebar(); }} className="bg-gray-700 text-white hover:bg-violet-900">
+               <MessageCircleCode  /> Create New Chat
                 </Button>
         </SidebarGroup>
         <div className='flex items-center justify-between flex-col gap-5 h-[70vh] overflow-y-auto scrollbar-hide'>

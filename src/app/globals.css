@@ -3,6 +3,10 @@
 @import 'tailwind-scrollbar-hide/v4';
 @custom-variant dark (&:is(.dark *));
 
+
+@import url('https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&family=Patua+One&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playwrite+IT+Moderna:wght@100..400&display=swap');
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -153,4 +157,18 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+/* fonts  */
+
+.zuno-regular {
+  font-family: "Patua One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.zuno-bold {
+  font-family: "Patua One", serif;
+  font-weight: 700;
+  font-style: bold;
 }
